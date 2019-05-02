@@ -1,0 +1,13 @@
+version: "3"
+services:
+    removalist:
+        image: "removalist:dev"
+        build:
+            context: .
+            dockerfile: Dockerfile
+        hostname: removalist
+        stdin_open: true
+        tty: true
+        working_dir: '/removalist-dev'
+        volumes:
+            - ".:/removalist-dev"
