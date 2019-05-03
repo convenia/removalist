@@ -3,10 +3,12 @@ from cement import App, TestApp, init_defaults
 from cement.core.exc import CaughtSignal
 from .core.exc import RemovalistError
 from .controllers.base import Base
+from .controllers.dependencies import Dependencies
+from .controllers.template import Template
 
-# configuration defaults
 CONFIG = init_defaults('removalist')
-CONFIG['removalist']['foo'] = 'bar'
+CONFIG['removalist']['dependencies_path'] = '.dependencies'
+CONFIG['removalist']['template_extension'] = 'rcl'
 
 
 class Removalist(App):
@@ -14,39 +16,25 @@ class Removalist(App):
 
     class Meta:
         label = 'removalist'
-
-        # configuration defaults
         config_defaults = CONFIG
-
-        # call sys.exit() on close
         close_on_exit = True
-
-        # load additional framework extensions
+        config_handler = 'yaml'
+        config_file_suffix = '.yml'
+        log_handler = 'colorlog'
+        output_handler = 'jinja2'
         extensions = [
             'yaml',
             'colorlog',
             'jinja2',
         ]
-
-        # configuration handler
-        config_handler = 'yaml'
-
-        # configuration file suffix
-        config_file_suffix = '.yml'
-
-        # set the log handler
-        log_handler = 'colorlog'
-
-        # set the output handler
-        output_handler = 'jinja2'
-
-        # register handlers
         handlers = [
-            Base
+            Base,
+            Dependencies,
+            Template
         ]
 
 
-class RemovalistTest(TestApp,Removalist):
+class RemovalistTest(TestApp, Removalist):
     """A sub-class of Removalist that is better suited for testing."""
 
     class Meta:
@@ -75,7 +63,6 @@ def main():
                 traceback.print_exc()
 
         except CaughtSignal as e:
-            # Default Cement signals are SIGINT and SIGTERM, exit 0 (non-error)
             print('\n%s' % e)
             app.exit_code = 0
 
