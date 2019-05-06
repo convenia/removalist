@@ -16,7 +16,7 @@ setup(
     long_description_content_type='text/markdown',
     author='Bruno Briante',
     author_email='bruno.briante@convenia.com.br',
-    url='https://gitlab.com/convenia/operations/cli/removalist/',
+    url='https://github.com/convenia/removalist',
     license='MIT',
     packages=find_packages(exclude=['ez_setup', 'tests*']),
     package_data={'removalist': ['templates/*']},
