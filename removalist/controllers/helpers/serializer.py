@@ -1,4 +1,4 @@
-from .data_tools import cleanup
+from .data import cleanup
 
 
 def json(data, filename='template', extension='json'):
